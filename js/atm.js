@@ -69,14 +69,14 @@ class Atm {
         });
         // account menu view
         this.Button.changePIN.onclick = () => this.openChangePIN();
-        this.Button.balance.onclick = () => this.openBalance(SHOW);
-        this.Button.deposit.onclick = () => this.openBalance(DEPOSIT);
-        this.Button.withdraw.onclick = () => this.openBalance(WITHDRAW);
+        this.Button.balance.onclick = () => this.openBalance(this.SHOW);
+        this.Button.deposit.onclick = () => this.openBalance(this.DEPOSIT);
+        this.Button.withdraw.onclick = () => this.openBalance(this.WITHDRAW);
         this.Button.logout.onclick = () => this.logout();
         // balance form view
         this.View.balance.setButtons({
-            accept: () => this.updateBalance,
-            cancel: () => this.goBack
+            accept: () => this.updateBalance(),
+            cancel: () => this.goBack()
         });
         // change pin view
         this.View.changePIN.setButtons({
@@ -161,9 +161,9 @@ class Atm {
         this.current.action = action;
         let title = ''; // will let us change the title of the view accordingly
         let readOnly = false; // for deposit and withdraw we change the input to writable                            
-        switch(current.action) {
+        switch(this.current.action) {
             case this.SHOW:     title = 'Balance'; 
-                                this.View.balance.setValue('amount', current.account.getBalance().toFixed(2));
+                                this.View.balance.setValue('amount', this.current.account.getBalance().toFixed(2));
                                 // for show we change the input to readonly
                                 readOnly = true;
                                 break;
@@ -188,13 +188,13 @@ class Atm {
         if(!this.View.balance.validateForm()) {
             return false;// return that form is not valid, HTML5 will handle error messages
         }
-        let ammount = this.View.balance.getValues().amount;  // get ammount value
+        let amount = this.View.balance.getValues().amount;  // get ammount value
         let errorMessage = null;
         if(isNaN(amount)) { // if amount is not a valid number different than blank
             errorMessage = ERROR.message(ERROR.INVALID_NUMBER, 'Amount');
-        } else if(parseFloat(ammount) <= 0) { // if ammount is <= than 0
+        } else if(parseFloat(amount) <= 0) { // if ammount is <= than 0
             errorMessage = ERROR.message(ERROR.NEGATIVE_0_NUMBER, 'Amount');            
-        } else if(!operation(ammount)){// attempt to deposit, if works continue
+        } else if(!operation(amount)){// attempt to deposit, if works continue
             // if doesnt work
             errorMessage = ERROR.message(ERROR.INVALID_OPERATION, 'operation');            
         }
@@ -212,10 +212,10 @@ class Atm {
     updateBalance() {        
         // determine the action
         let operation;
-        switch(current.action) {                    
+        switch(this.current.action) {                    
             case this.SHOW:     break; // do nothing
-            case this.DEPOSIT:  operation = this.current.account.deposit; // operation will be deposit
-            case this.WITHDRAW: if(!operation) operation = this.current.account.withdraw; // if operation wasn't defined on deposit, is now withdraw
+            case this.DEPOSIT:  operation = (value) => this.current.account.deposit(value); // operation will be deposit, need to create anonymous function to keep scope of this
+            case this.WITHDRAW: if(!operation) operation = (value) =>this.current.account.withdraw(value); // if operation wasn't defined on deposit, is now withdraw
                                 if(!this.balanceOperation(operation)) return; // if there was an error we stop execution
                                 // show new balance on Account menu view for 4 seconds    
                                 new Alert(this.View.account, 4 * 1000).success('Current balance: ' + this.current.account.getBalance().toFixed(2));
