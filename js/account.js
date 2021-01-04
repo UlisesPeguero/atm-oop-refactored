@@ -1,3 +1,4 @@
+// Holds the relevant information of the account and methods to work with the balance
 class Account{
     
     /*
@@ -8,8 +9,7 @@ class Account{
     // private attributes
         this.pin = pin;
         this.name = name;
-        this.balance = parseFloat(balance) || 0.00; // if not balance is provided we intialize on 0.00
-        
+        this.balance = parseFloat(balance) || 0.00; // if not balance is provided we intialize on 0.00        
     }
 
     /*

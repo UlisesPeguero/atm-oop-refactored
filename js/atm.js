@@ -194,9 +194,10 @@ class Atm {
             errorMessage = ERROR.message(ERROR.INVALID_NUMBER, 'Amount');
         } else if(parseFloat(amount) <= 0) { // if ammount is <= than 0
             errorMessage = ERROR.message(ERROR.NEGATIVE_0_NUMBER, 'Amount');            
-        } else if(!operation(amount)){// attempt to deposit, if works continue
+        } else if(!operation(amount)){// attempt to execute operation, if works continue
             // if doesnt work
-            errorMessage = ERROR.message(ERROR.INVALID_OPERATION, 'operation');            
+            if(this.current.action === this.DEPOSIT) errorMessage = ERROR.message(ERROR.INVALID_OPERATION, 'operation');           
+            else errorMessage = ERROR.message(ERROR.INVALID_WITHDRAWAL, this.current.account.getBalance());
         }
         // check for errors to show
         if(errorMessage !== null) {
@@ -215,7 +216,7 @@ class Atm {
         switch(this.current.action) {                    
             case this.SHOW:     break; // do nothing
             case this.DEPOSIT:  operation = (value) => this.current.account.deposit(value); // operation will be deposit, need to create anonymous function to keep scope of this
-            case this.WITHDRAW: if(!operation) operation = (value) =>this.current.account.withdraw(value); // if operation wasn't defined on deposit, is now withdraw
+            case this.WITHDRAW: if(!operation) operation = (value) => this.current.account.withdraw(value); // if operation wasn't defined on deposit, is now withdraw
                                 if(!this.balanceOperation(operation)) return; // if there was an error we stop execution
                                 // show new balance on Account menu view for 4 seconds    
                                 new Alert(this.View.account, 4 * 1000).success('Current balance: ' + this.current.account.getBalance().toFixed(2));

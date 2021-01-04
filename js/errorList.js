@@ -48,6 +48,12 @@ const ERROR = {
             return `${this.code}. The ${label} PIN is invalid, choose a different one.`; // PIN is totally not used by another account
         }
     },
+    INVALID_WITHDRAWAL: {
+        code: '08',
+        message(label) {
+            return `${this.code}. The amount to withdraw cannot exceed the balance. (${label})`;
+        }
+    },
     /*  Prepare message to be send
         @param  error   {Object}    -> Takes one of the ERROR objects to determine the message sent
         @param  label   {string}    -> Depending on the type of error message it might need an extra argument 
