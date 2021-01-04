@@ -5,8 +5,7 @@ class Account{
         Initializes Account instance and set the starting values for pin, name and balance
         @param  data   {Object}     -> {pin, name, balance} starting values for the Account
     */    
-    constructor({pin, name, balance}) {
-    // private attributes
+    constructor({pin, name, balance}) { // destructuring object 
         this.pin = pin;
         this.name = name;
         this.balance = parseFloat(balance) || 0.00; // if not balance is provided we intialize on 0.00        
