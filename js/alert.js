@@ -50,7 +50,7 @@ class Alert {
     /*
         Sets the ViewContainer for the message
         @param view {ViewContainer} -> Container for the message
-        @return {this}              -> Returns the instance itself to chaing methods
+        @return {this}              -> Returns the instance itself to chain methods
     */
     setView(view) {
         this.view = view;
@@ -60,7 +60,7 @@ class Alert {
     /*
         Sets the delay time in milliseconds for the message
         @param delay {number} -> Milliseconds of delay
-        @return {this}        -> Returns the instance itself to chaing methods
+        @return {this}        -> Returns the instance itself to chain methods
     */
     setDelay(delay) {
         this.delay = delay;
